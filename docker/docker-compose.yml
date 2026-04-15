@@ -1,0 +1,25 @@
+services:
+  ocr-node-app:
+    networks:
+      - web
+    environment:
+      - TZ=Asia/Kuala_Lumpur
+    mem_limit: ${MEM_LIMIT}
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - .env
+    container_name: ocr-node-app
+    # USE port as no subdomain for uat
+    ports:
+      - "6005:6005"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "5"
+
+networks:
+  web:
+    external: true
