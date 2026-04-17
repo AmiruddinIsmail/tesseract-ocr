@@ -14,9 +14,10 @@ const pdf: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
         const parser = new PDFParse(new Uint8Array(buffer));
         const text = await parser.getText();
+        const header = await parser.getInfo();
         const table = await parser.getTable();
 
-        return { text, table };
+        return { text, table, header };
     })
 }
 
