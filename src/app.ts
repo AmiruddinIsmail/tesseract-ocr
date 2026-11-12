@@ -15,7 +15,13 @@ const app: FastifyPluginAsync<AppOptions> = async (
   opts
 ): Promise<void> => {
   // Place here your custom code!
-  void fastify.register(fastifyMultipart);
+  // Default fileSize limit is 1 MB, which rejects larger bank statements (e.g. 3-month HLB PDFs)
+  // with 413 FST_REQ_FILE_TOO_LARGE. Allow up to 5 MB.
+  void fastify.register(fastifyMultipart, {
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
+  });
 
   void fastify.register(AutoLoad, {
     dir: join(__dirname, 'plugins'),
